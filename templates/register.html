@@ -1,0 +1,70 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<head>
+    <title>Registration</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="{% static 'css/register.css' %}">
+</head>
+<body>
+    
+    <script>
+        
+        $(document).ready(function() {
+            const bclick = document.getElementById('id_password');
+            bclick.addEventListener('input', check );
+        });
+        function check(){
+            var pwd1=document.getElementById('id_password');
+            var pwd2=document.getElementById('pwd');
+            var btn=document.getElementById('submit');
+            var con=document.getElementById('confirm');
+            if(pwd1.value==pwd2.value){
+                btn.disabled=false;
+                con.innerText="";
+            }
+            else{
+                btn.disabled=true;
+                con.innerHTML="<h6 style='color:red'>Paasword does not matched</h6>";
+            }
+
+        }
+        
+        
+    </script>
+    <br>
+    <form method="post" enctype="multipart/form-data" >
+        {% csrf_token %}
+        <center>
+            <div class="alert2" style="display:{{user1}}">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                Username is already taken<br>Please try again with new one
+            </div>
+            <div class="alert1" style="display:{{success}} ">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                Successfully registered
+            </div>
+            <div class="alert" style="display:{{user2}} ">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                Email is already registered with us <a href="{% url 'login' %}"> Log in</a>
+            </div>
+            <br>
+        <div class="form-group">
+            <table class="table table-striped table-bordered table-hover" style="width:fit-content;">
+        {{form.as_table}}
+        <tr><th><label for="pwd">Confirm Password: </label></th>
+        <td><input type="password" name="pwd" id="pwd" oninput="check()" ><span id="confirm"></span></td></tr>
+        <tr><td  colspan="2" style="text-align: center;"><input type="submit" disabled id="submit" class="btn btn-success mb-2"></td></tr></table>
+        
+        
+        
+        </div>
+        </center>
+        
+
+    </form>
+</body>
+
+</html>

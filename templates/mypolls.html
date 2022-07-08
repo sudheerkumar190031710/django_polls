@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<head>
+    <title>My Polls</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
+    <style>
+        .flex{
+            display: flex;
+            width: 70%;
+        }
+        .table{
+            flex: 1;
+            
+            margin: 20px;
+        }
+        .table:first-child {
+            margin-right: 20px;
+          }
+          input[type="email"],input[type="text"],input[type="number"]{
+            width:150%;
+            border: 0px solid ;
+            
+          }
+    </style>
+    <script>
+        function start(){
+            var nodes=document.querySelectorAll('input[type="text"]');
+            for (var i=0; i<nodes.length; i++){
+                nodes[i].disabled=true;
+            }
+            document.querySelector('input[type="email"]').disabled=true;
+            document.querySelector('input[type="number"]').disabled=true;
+            var radios=document.querySelectorAll('input[type="radio"]');
+            for (var j=0; j<radios.length; j++){
+                radios[j].disabled=true;
+            } 
+            document.querySelector('textarea').disabled=true;
+        }
+    </script>
+</head>
+<body onload="start()">
+    <br><br>
+    <div class="form-group flex">
+        
+        {% csrf_token %}
+       <div class="table">
+    <table class="table table-striped table-bordered table-hover" style="width:fit-content;">
+    {{form.as_table}}
+    
+    </table>
+    </div>
+    
+    
+    
+    <div class="polls">
+        <h1>Polls</h1>
+        <br>
+        {% for poll in polls %}
+        <div class="container">
+        <h2>Question : {{poll.question}}</h2>
+        </div>
+        
+        <ul class="list-group">
+            <li class="list-group-item">Option 1 : {{poll.opt1}}</li>
+            <li class="list-group-item">Option 2 : {{poll.opt2}}</li>
+            <li class="list-group-item">Option 3 : {{poll.opt3}}</li>
+            <li class="list-group-item">Option 4 ? {{poll.opt4}}</li>
+            
+            
+          </ul>
+        <br>
+        <div>
+            {% for answer in answers %}
+            {{answer.answer}}
+            {% endfor %}
+        </div>
+        <br><hr>
+        {% endfor %}
+    </div>
+    
+    </div>
+
+</body>
+
+</html>
