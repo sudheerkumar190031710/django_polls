@@ -90,15 +90,22 @@ def home(request):
 
 @login_required
 def newpoll(request):
+    username=request.user
+    count=PollQuestions.objects.filter(username=username).count()
+    
     if request.method=='POST':
-        username=request.user
-        question=request.POST['question']
-        opt1=request.POST['opt1']
-        opt2=request.POST['opt2']
-        opt3=request.POST['opt3']
-        opt4=request.POST['opt4']
-        PollQuestions(username=username,question=question,opt1=opt1,opt2=opt2,opt3=opt3,opt4=opt4).save()
-        
+        if count<=5:
+            question=request.POST['question']
+            opt1=request.POST['opt1']
+            opt2=request.POST['opt2']
+            opt3=request.POST['opt3']
+            opt4=request.POST['opt4']
+            
+            PollQuestions(username=username,question=question,opt1=opt1,opt2=opt2,opt3=opt3,opt4=opt4).save()
+            return render(request,'newpoll.html',{'form':createpoll,'a':'created poll successfully'})
+        else:
+            return render(request,'newpoll.html',{'a':"Unable to create poll,limit upto 5 polls only"})
+    
     print(request.user) 
     return render(request,'newpoll.html',{'form':createpoll})
 
